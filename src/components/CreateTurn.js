@@ -70,7 +70,7 @@ export default class CreateTurn extends Component {
                         </div>
                         <div className="form-group">
                             <label>Estimate Time: </label>
-                                <input  type="text"
+                                <input  type="number"
                                     className="form-control"
                                     value={this.state.MinutesLeft}
                                     onChange={this.onChangeTurnTime}
@@ -85,31 +85,6 @@ export default class CreateTurn extends Component {
                         Save Changes
                     </Button>
             </Modal.Footer>
-            
-            {/*<div style={{marginTop: 20}}>
-                <h3>Create New Turn</h3>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label>Turn Number: </label>
-                        <input  type="text"
-                                className="form-control"
-                                value={this.state.turnNumber}
-                                onChange={this.onChangeTurnNumber}
-                                />
-                    </div>
-                    <div className="form-group">
-                        <label>Estimate Time: </label>
-                        <input  type="text"
-                                className="form-control"
-                                value={this.state.minutesLeft}
-                                onChange={this.onChangeTurnTime}
-                                />
-                    </div>
-                    <div className="form-group">
-                        <input type="submit" value="Create Turn" className="btn btn-primary" />
-                    </div>
-                </form>
-        </div>*/}
         </>
         )
     }
