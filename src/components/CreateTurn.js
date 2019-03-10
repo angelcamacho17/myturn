@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import { Button, Modal } from 'react-bootstrap';
 
 export default class CreateTurn extends Component {
 
@@ -7,97 +8,109 @@ export default class CreateTurn extends Component {
         super(props);
 
         this.onChangeTurnNumber = this.onChangeTurnNumber.bind(this);
-        this.onChangeTurnResponsible = this.onChangeTurnResponsible.bind(this);
-        this.onChangeTurnPriority = this.onChangeTurnPriority.bind(this);
+        this.onChangeTurnTime = this.onChangeTurnTime.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
 
         this.state = {
-            turn_description: '',
-            turn_responsible: '',
-            turn_priority: '',
-            turn_completed: false
+            TurnNumber: '',
+            MinutesLeft: '',
+            show: false
         }
+    }
+
+    handleClose() {
+        this.setState({ show: false });
     }
 
     onChangeTurnNumber(e) {
         this.setState({
-            turn_description: e.target.value
+            TurnNumber: e.target.value
         });
     }
 
-    onChangeTurnResponsible(e) {
+    onChangeTurnTime(e) {
         this.setState({
-            turn_responsible: e.target.value
-        });
-    }
-
-    onChangeTurnPriority(e) {
-        this.setState({
-            turn_priority: e.target.value
+            MinutesLeft: e.target.value
         });
     }
 
     onSubmit(e) {
         e.preventDefault();
-
-        console.log(`Form submitted:`);
-        console.log(`Turn Description: ${this.state.turn_description}`);
-        console.log(`Turn Responsible: ${this.state.turn_responsible}`);
-        console.log(`Turn Priority: ${this.state.turn_priority}`);
-        console.log(`Turn Completed: ${this.state.turn_completed}`);
-
         const newTurn = {
-            turn_description: this.state.turn_description,
-            turn_responsible: this.state.turn_responsible,
-            turn_priority: this.state.turn_priority,
-            turn_completed: this.state.turn_completed
+            TurnNumber: this.state.TurnNumber,
+            MinutesLeft: this.state.MinutesLeft,
+            show: false
         }
 
         axios.post('http://localhost:4005/turns/add', newTurn)
             .then(res => console.log(res.data));
 
         this.setState({
-            turn_description: '',
-            turn_responsible: '',
-            turn_priority: '',
-            turn_completed: false
+            TurnNumber: '',
+            MinutesLeft: '',
+            show: false
         })
     }
 
     render() {
         return (
-            <div style={{marginTop: 20}}>
+            <>
+            <Modal.Header closeButton>
+                    <Modal.Title>Create Turn</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="form-group">
+                            <label>Turn Number: </label>
+                                <input  type="number"
+                                    className="form-control"
+                                    value={this.state.TurnNumber}
+                                    onChange={this.onChangeTurnNumber}
+                                />
+                        </div>
+                        <div className="form-group">
+                            <label>Estimate Time: </label>
+                                <input  type="text"
+                                    className="form-control"
+                                    value={this.state.MinutesLeft}
+                                    onChange={this.onChangeTurnTime}
+                                />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={this.onSubmit}>
+                        Save Changes
+                    </Button>
+            </Modal.Footer>
+            
+            {/*<div style={{marginTop: 20}}>
                 <h3>Create New Turn</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Turn Number: </label>
                         <input  type="text"
                                 className="form-control"
-                                value={this.state.turn_description}
+                                value={this.state.turnNumber}
                                 onChange={this.onChangeTurnNumber}
                                 />
                     </div>
                     <div className="form-group">
-                        <label>Next: </label>
+                        <label>Estimate Time: </label>
                         <input  type="text"
                                 className="form-control"
-                                value={this.state.turn_responsible}
-                                onChange={this.onChangeTurnResponsible}
-                                />
-                    </div>
-                    <div className="form-group">
-                        <label>Previous: </label>
-                        <input  type="text"
-                                className="form-control"
-                                value={this.state.turn_responsible}
-                                onChange={this.onChangeTurnResponsible}
+                                value={this.state.minutesLeft}
+                                onChange={this.onChangeTurnTime}
                                 />
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Create Turn" className="btn btn-primary" />
                     </div>
                 </form>
-            </div>
+        </div>*/}
+        </>
         )
     }
 }

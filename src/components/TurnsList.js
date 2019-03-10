@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 // eslint-disable-next-line
 import { Link } from 'react-router-dom';
+import { Button, Modal } from 'react-bootstrap';
+import CreateTurn from './CreateTurn';
 import axios from 'axios';
 
 const Turn = props => (
@@ -9,9 +11,9 @@ const Turn = props => (
         <td>{props.turn.Next}</td>
         <td>{props.turn.Previous}</td>
         <td>{props.turn.MinutesLeft}</td>
-        {/*<td>
+        <td>
             <Link to={"/edit/"+props.turn._id}>Edit</Link>
-        </td>*/}
+        </td>
     </tr>
 )
 
@@ -19,13 +21,28 @@ export default class TurnsList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {turns: []};
+        this.addturn = this.addturn.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.state = {
+            turns: [],
+            createTurn:false
+            };
+    }
+
+    addturn(){
+        this.setState({createTurn:true})
+    }
+    
+    handleClose() {
+        this.setState({ createTurn: false });
     }
 
     componentDidMount() {
         axios.get('http://localhost:4005/turns/')
             .then(response => {
-                this.setState({turns: response.data});
+                this.setState({
+                    turns: response.data,
+                    createTurn:false});
             })
             .catch(function (error) {
                 console.log(error);
@@ -35,7 +52,8 @@ export default class TurnsList extends Component {
     xcomponentWillUpdate() {
         axios.get('http://localhost:4005/turns/')
         .then(response => {
-            this.setState({turns: response.data});
+            this.setState({turns: response.data,
+                            createTurn:false});
         })
         .catch(function (error) {
             console.log(error);
@@ -52,6 +70,9 @@ export default class TurnsList extends Component {
         return (
             <div>
                 <h3>Turn List</h3>
+                <Button variant="primary" onClick={this.addturn}>
+                    Add Turn
+                </Button>
                 <table className="table table-striped" style={{ marginTop: 20 }}>
                     <thead>
                         <tr>
@@ -65,6 +86,9 @@ export default class TurnsList extends Component {
                         { this.turnList() }
                     </tbody>
                 </table>
+                <Modal show={this.state.createTurn} onHide={this.handleClose}>
+                    <CreateTurn/>
+                </Modal>
             </div>
         )
     }

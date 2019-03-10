@@ -41,18 +41,8 @@ class Navbar extends Component{
                     </Link>
                 </li>
                 <li className="nav-item">
-                     <Link to="/create" className="nav-link">
-                        Create Turn
-                     </Link>
-                </li>
-                <li className="nav-item">
                     <Link onClick={this.logOut.bind(this)} className="nav-link" to="/login">
                         Log Out
-                    </Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="/popup">
-                        Popup 
                     </Link>
                 </li>
             </ul>
