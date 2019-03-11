@@ -5,25 +5,13 @@ import { Button, Modal } from 'react-bootstrap';
 import CreateTurn from './CreateTurn';
 import EditTurn from './EditTurn';
 import axios from 'axios';
-
-const Turn = props => (
-    <tr>
-        <td>{props.turn.TurnNumber}</td>
-        <td>{props.turn.MinutesLeft}</td>
-        <td>    
-            <Link to='/edit/:id'>
-                Edit
-            </Link>
-        </td>
-    </tr>
-)
+import Turn from './TurnRow'
 
 export default class TurnsList extends Component {
 
     constructor(props) {
         super(props);
         this.handleAddturn = this.handleAddturn.bind(this);
-        this.handleEditTurn = this.handleEditTurn.bind(this);
         this.handleClose = this.handleClose.bind(this);
 
         this.state = {
@@ -35,10 +23,6 @@ export default class TurnsList extends Component {
 
     handleAddturn(){
         this.setState({createTurn:true})
-    }
-
-    handleEditTurn(){
-        this.setState({editTurn:true})
     }
     
     handleClose() {
@@ -74,7 +58,7 @@ export default class TurnsList extends Component {
 
     turnList() {
         return this.state.turns.map(function(currentTurn, i) {
-            return ( <Turn turn={currentTurn} key={i} />);
+            return (<Turn turn={currentTurn} key={i} />);
         });
     }
 
